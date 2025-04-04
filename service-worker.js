@@ -1,10 +1,10 @@
 const CACHE_NAME = 'arpal-pwa-cache-v2';
 const urlsToCache = [
-    '/arpal/',
-    '/arpal/index.html',
-    '/arpal/manifest.json',
-    '/arpal/icon-192x192.png',
-    '/arpal/icon-512x512.png'
+    '/',
+    '/index.html',
+    '/manifest.json',
+    '/icon-192x192.png',
+    '/icon-512x512.png'
 ];
 
 self.addEventListener('install', (event) => {
