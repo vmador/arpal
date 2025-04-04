@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>arpal PWA</title>
+    <title>Arpal Sounds</title>
     <link rel="manifest" href="manifest.json">
     <link rel="icon" type="image/png" sizes="192x192" href="/arpal/icon-192x192.png">
     <link rel="icon" type="image/png" sizes="512x512" href="/arpal/icon-512x512.png">
@@ -14,9 +14,9 @@
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="arpal PWA">
+    <meta name="apple-mobile-web-app-title" content="Arpal Sounds">
     <meta name="mobile-web-app-capable" content="yes">
-    <meta name="description" content="arpal Progressive Web App">
+    <meta name="description" content="Arpal Sounds & Live Experiences">
     <style>
         body, html {
             margin: 0;
@@ -44,7 +44,7 @@
     </style>
 </head>
 <body>
-    <iframe id="framerContent" src="https://arpal.framer.website" allowfullscreen allow="geolocation; camera; microphone; storage-access"></iframe>
+    <iframe id="framerContent" src="https://arpalsound.framer.website/" allowfullscreen allow="geolocation; camera; microphone; storage-access"></iframe>
     <script>
     function sendMessageToIframe(message) {
         const iframe = document.getElementById('framerContent');
@@ -52,7 +52,7 @@
     }
     
     window.addEventListener('message', function(event) {
-        if (event.origin !== "https://arpal.framer.website") return;
+        if (event.origin !== "https://arpalsound.framer.website/") return;
         
         if (event.data.type === 'setSessionData') {
             localStorage.setItem('sessionData', JSON.stringify(event.data.sessionData));
