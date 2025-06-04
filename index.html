@@ -49,7 +49,7 @@
     <script>
     function sendMessageToIframe(message) {
         const iframe = document.getElementById('framerContent');
-        iframe.contentWindow.postMessage(message, 'https://arpal.framer.website');
+        iframe.contentWindow.postMessage(message, 'https://arpalsound.framer.website');
     }
     
     window.addEventListener('message', function(event) {
@@ -90,7 +90,7 @@
 
     if ('serviceWorker' in navigator) {
         window.addEventListener('load', function() {
-            navigator.serviceWorker.register('/arpal/service-worker.js').then(function(registration) {
+            navigator.serviceWorker.register('/service-worker.js').then(function(registration) {
                 console.log('ServiceWorker registration successful with scope: ', registration.scope);
             }, function(err) {
                 console.log('ServiceWorker registration failed: ', err);
