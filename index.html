@@ -1,11 +1,28 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, viewport-fit=cover" />
-  <title>Arpal Sounds</title>
-  <meta name="description" content="Productive Soundscapes" />
-  <meta name="theme-color" content="#000000" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>arpal</title>
+    <meta name="description" content="Arpal Sounds & Sound Experiences">
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" type="image/png" sizes="192x192" href="/icon-192x192.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="/icon-512x512.png">
+    <link rel="apple-touch-icon" href="/icon-192x192.png">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#000000">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="arpal">
+    <meta property="og:title" content="arpal">
+    <meta property="og:description" content="Arpal Sounds & Sound Experiences">
+    <meta property="og:image" content="/social-preview.png">
+    <meta property="og:url" content="https://arpalsound.framer.website">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="arpal">
+    <meta name="twitter:description" content="Arpal Sounds & Sound Experiences">
+    <meta name="twitter:image" content="/social-preview.png">
+    <meta name="theme-color" content="#000000" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <meta name="mobile-web-app-capable" content="yes" />
@@ -13,40 +30,45 @@
   <link rel="manifest" href="/manifest.json" />
   <link rel="icon" href="/icon-192x192.png" />
   <link rel="apple-touch-icon" href="/icon-192x192.png" />
-  <style>
-    html, body {
-      margin: 0;
-      padding: 0;
-      background-color: #000;
-      overflow: hidden;
-      height: 100%;
-      touch-action: manipulation; /* Previene zoom en toques dobles */
-      -webkit-touch-callout: none;
-      -webkit-user-select: none;
-      -khtml-user-select: none;
-      -moz-user-select: none;
-      -ms-user-select: none;
-      user-select: none;
-      -webkit-text-size-adjust: none;
-      -moz-text-size-adjust: none;
-      -ms-text-size-adjust: none;
-      text-size-adjust: none;
-    }
-    iframe {
+    <style>
+        body, html { 
+            margin: 0; 
+            padding: 0; 
+            height: 100%; 
+            overflow: hidden; 
+            background-color: #000; 
+        }
+        iframe { 
+            width: 100lvw; 
+            height: 100lvh; 
+            border: none; 
+            position: fixed; 
+            top: 0; 
+            left: 0; 
+            right: 0; 
+            bottom: 0; 
+        }
+        @supports(padding: max(0px)) {
+            body, iframe { 
+                padding-top: env(safe-area-inset-top); 
+                height: calc(100lvh - env(safe-area-inset-top)); 
+            }
+        }
+        iframe {
       position: fixed;
       top: 0;
       left: 0;
       width: 100vw;
-      height: 100vh; /* ← clave: usamos vh, no lvh */
+      height: 100vh; /* â clave: usamos vh, no lvh */
       border: none;
       background-color: #000;
-      touch-action: manipulation; /* Previene zoom en el iframe también */
+      touch-action: manipulation; /* Previene zoom en el iframe tambiÃ©n */
       -webkit-touch-callout: none;
       -webkit-user-select: none;
       user-select: none;
     }
     
-    /* Solo para Safari navegador (no PWA): usar viewport dinámico */
+    /* Solo para Safari navegador (no PWA): usar viewport dinÃ¡mico */
     @supports (-webkit-touch-callout: none) {
       @media not all and (display-mode: standalone) {
         iframe {
@@ -64,82 +86,63 @@
         overflow: hidden !important;
       }
     }
-  </style>
+    </style>
 </head>
 <body>
-  <iframe
-    id="framerContent"
-    src="https://arpalsound.framer.website/"
-    allowfullscreen
-    allow="geolocation; camera; microphone; storage-access"
-  ></iframe>
-  <script>
+    <iframe id="framerContent" src="https://arpalsound.framer.website/" allowfullscreen allow="geolocation; camera; microphone; storage-access"></iframe>
+    
+    
+    <script>
     function sendMessageToIframe(message) {
-      const iframe = document.getElementById("framerContent");
-      iframe?.contentWindow.postMessage(message, "https://arpalsound.framer.website/");
+        const iframe = document.getElementById('framerContent');
+        iframe.contentWindow.postMessage(message, 'https://arpalsound.framer.website/');
     }
-    window.addEventListener("message", function(event) {
-      if (event.origin !== "https://arpalsound.framer.website/") return;
-      if (event.data.type === "setSessionData") {
-        localStorage.setItem("sessionData", JSON.stringify(event.data.sessionData));
-      } else if (event.data.type === "getSessionData") {
-        const sessionData = localStorage.getItem("sessionData");
-        sendMessageToIframe({
-          type: "sessionDataResponse",
-          sessionData: sessionData ? JSON.parse(sessionData) : null
-        });
-      }
-    });
-    window.addEventListener("load", function() {
-      const sessionData = localStorage.getItem("sessionData");
-      if (sessionData) {
-        sendMessageToIframe({
-          type: "restoreSession",
-          sessionData: JSON.parse(sessionData)
-        });
-      }
-      if ("serviceWorker" in navigator) {
-        navigator.serviceWorker.register("/service-worker.js").catch(() => {});
-      }
-      
-      // Prevenir zoom con JavaScript adicional
-      document.addEventListener('gesturestart', function(e) {
-        e.preventDefault();
-      });
-      
-      document.addEventListener('gesturechange', function(e) {
-        e.preventDefault();
-      });
-      
-      document.addEventListener('gestureend', function(e) {
-        e.preventDefault();
-      });
-      
-      // Prevenir zoom con rueda del mouse
-      document.addEventListener('wheel', function(e) {
-        if (e.ctrlKey) {
-          e.preventDefault();
+    
+    window.addEventListener('message', function(event) {
+        if (event.origin !== "https://arpalsound.framer.website/") return;
+        
+        if (event.data.type === 'setSessionData') {
+            localStorage.setItem('sessionData', JSON.stringify(event.data.sessionData));
+        } else if (event.data.type === 'getSessionData') {
+            const sessionData = localStorage.getItem('sessionData');
+            sendMessageToIframe({
+                type: 'sessionDataResponse',
+                sessionData: sessionData ? JSON.parse(sessionData) : null
+            });
         }
-      }, { passive: false });
-      
-      // Prevenir zoom con teclas
-      document.addEventListener('keydown', function(e) {
-        if ((e.ctrlKey || e.metaKey) && (e.key === '+' || e.key === '-' || e.key === '0')) {
-          e.preventDefault();
-        }
-      });
-    });
-    document.addEventListener("visibilitychange", function() {
-      if (!document.hidden) {
-        const sessionData = localStorage.getItem("sessionData");
+    }, false);
+
+    window.addEventListener('load', function() {
+        const sessionData = localStorage.getItem('sessionData');
         if (sessionData) {
-          sendMessageToIframe({
-            type: "restoreSession",
-            sessionData: JSON.parse(sessionData)
-          });
+            sendMessageToIframe({
+                type: 'restoreSession',
+                sessionData: JSON.parse(sessionData)
+            });
         }
-      }
     });
-  </script>
+
+    document.addEventListener('visibilitychange', function() {
+        if (!document.hidden) {
+            const sessionData = localStorage.getItem('sessionData');
+            if (sessionData) {
+                sendMessageToIframe({
+                    type: 'restoreSession',
+                    sessionData: JSON.parse(sessionData)
+                });
+            }
+        }
+    });
+
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', function() {
+            navigator.serviceWorker.register('/service-worker.js').then(function(registration) {
+                // Registration successful
+            }, function(err) {
+                // Registration failed
+            });
+        });
+    }
+    </script>
 </body>
 </html>
