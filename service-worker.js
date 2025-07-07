@@ -11,8 +11,8 @@ self.addEventListener('install', (event) => {
     event.waitUntil(
         caches.open(CACHE_NAME)
             .then((cache) => {
-                console.log('Opened cache');
-                return cache.addAll(urlsToCache);})
+                return cache.addAll(urlsToCache);
+            })
     );
 });
 
@@ -59,8 +59,7 @@ self.addEventListener('fetch', (event) => {
                     }
                 );
             }).catch(() => {
-                // Si tanto la caché como la red fallan, podrías devolver una página de error offline
-                // return caches.match('/arpal/offline.html');
+                // Handle cache and network failures silently
             })
     );
 });
